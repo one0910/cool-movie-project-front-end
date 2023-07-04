@@ -1,76 +1,77 @@
 .footer {
-    background-color: #393A3A;
-    padding-top: 40px;
-    padding-bottom: 32px;
+	background-color: rgba(108, 112, 112, 0.21);
+	padding-top: 19px;
+	padding-bottom: 17px;
 
-    ul {
-        padding: 0;
-        margin-left: 0;
-    }
+	ul {
+		padding: 0;
+		margin-left: 0;
+	}
 
-    hr {
-        margin: 25px 0;
-    }
+	hr {
+		margin: 25px 0;
+	}
 
-    img {
-        width: 100%;
-    }
+	img {
+		width: 100%;
+	}
 
-    &-logo {
-        max-width: 224px;
-    }
+	&-logo {
+		max-width: 224px;
+	}
 
-    &-fb,&-ig{
-        width: 26px;
-    }
+	&-fb,
+	&-ig {
+		width: 26px;
+	}
 
-    &-content {
-        font-size: 20px;
-        margin-top: 30px;
+	&-content {
+		font-size: 20px;
+		margin-top: 30px;
 
-        li+li {
-            margin-left: 40px;
-        }
-    }
+		li+li {
+			margin-left: 40px;
+		}
+	}
 
-    &-contact {
-        margin-top: 12px;
-        font-size: 16px;
-        color: #CFCFCF;
+	&-contact {
+		margin-top: 12px;
+		font-size: 16px;
+		color: #CFCFCF;
 
-        li {
-            line-height: 32px;
-            height: 32px;
-        }
-    }
+		li {
+			line-height: 32px;
+			height: 32px;
+		}
+	}
 
-    &-copyright {
-        font-size: 16px;
-        color: #9E9FA1;
-    }
+	&-copyright {
+		font-size: 16px;
+		color: #9E9FA1;
+	}
 
-    @media screen and (max-width: 992px) {
-        padding-top: 32px;
-        padding-bottom: 24px;
-        font-size: 16px;
+	@media screen and (max-width: 992px) {
+		padding-top: 19px;
+		padding-bottom: 17px;
+		font-size: 16px;
 
-        &-content {
-            font-size: 16px;
-            margin-top: 22px;
-        }
+		&-content {
+			font-size: 16px;
+			margin-top: 22px;
+		}
 
-        &-contact {
-            margin-top: 12px;
-            font-size: 16px;
+		&-contact {
+			margin-top: 12px;
+			font-size: 16px;
 
-            li {
-                line-height: 32px;
-                height: 32px;
-            }
-        }
+			li {
+				line-height: 32px;
+				height: 32px;
+			}
+		}
 
-        &-copyright {
-            font-size: 16px;
-        }
-    }
+		&-copyright {
+			font-size: 16px;
+		}
+	}
 }

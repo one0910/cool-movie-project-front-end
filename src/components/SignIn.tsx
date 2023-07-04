@@ -1,10 +1,10 @@
-import React, { useState,useEffect, MutableRefObject, Dispatch, SetStateAction, useContext } from 'react'
+import React, { useState, useEffect, MutableRefObject, Dispatch, SetStateAction, useContext } from 'react'
 import { OrderContext } from '../store';
 import { useForm, useWatch } from "react-hook-form"
-import { authFetch,getCookie } from '../utilities';
+import { authFetch, getCookie } from '../utilities';
 import { Loading, ErrorMsg } from './';
-import { CatchErrorMessage } from '../interface/member';
-import { de } from 'date-fns/locale';
+import { CatchErrorMessage } from '../interface';
+
 
 interface LoginPropsType {
 	myModal: MutableRefObject<bootstrap.Modal | null>
@@ -12,9 +12,10 @@ interface LoginPropsType {
 }
 
 export interface SignInType {
+	normal_ticket_num: any;
 	useremail: string,
 	password: string
-	remember_me:boolean
+	remember_me: boolean
 }
 
 
@@ -23,19 +24,11 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin }) => {
 	const [errMsg, setErrMsg] = useState<string>()
 	const [loading, setloading] = useState(false)
 	const { register, handleSubmit, control, getValues, setError, formState: { errors } } = useForm<SignInType>({
-		defaultValues:{
+		defaultValues: {
 			remember_me: true
 		}
 	});
 	const watchForm = useWatch({ control });
-
-useEffect(()=>{
-	if(getValues().remember_me){
-		// document.cookie = "remember_me=true; SameSite=None; Secure";
-	}else{
-		// document.cookie = "remember_me=; SameSite=None; Secure; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-	}
-},[watchForm])
 
 	const loginForm = (data: SignInType) => {
 		(async function () {
@@ -48,20 +41,35 @@ useEffect(()=>{
 				const userToken = response.data.data.token
 				const userId = response.data.data.signinRes._id
 				const userName = response.data.data.signinRes.nickName
+				const quantity = (state.orderList.quantity) ? state.orderList.quantity : 1
+				const price = (state.orderList.price > 0) ? (state.orderList.price) - 50 : state.orderList.price
 				localStorage.setItem('userToken', userToken)
-				if(getValues().remember_me){
+
+				// 監控若是有勾選"保持登入"
+				if (getValues().remember_me) {
 					document.cookie = "remember_me=true; SameSite=None; Secure";
-				}else{
+				} else {
 					document.cookie = "remember_me=; SameSite=None; Secure; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 				}
+				// 登入後，將會員名稱、會員ID、會員狀態、價格重新寫入store
 				dispatch({
 					type: "ADD_MEMBER_DATA",
 					payload: {
 						memberId: userId,
 						memberName: userName,
+						price: price,
 						status: "member"
 					}
 				})
+
+				// 登入後，總價重新寫入store
+				dispatch({
+					type: "SET_TOTAL_PRICE",
+					payload: {
+						quantity: quantity,
+						total: quantity * price,
+					},
+				});
 				myModal.current?.hide();
 				setloading(false)
 				setIsLogin(true)
@@ -136,9 +144,9 @@ useEffect(()=>{
 					{errors.password && (
 						<div className="invalid-feedback">{errors?.password?.message}</div>
 					)}
-					<input 
-						type="checkbox" 
-						className="checkbox" 
+					<input
+						type="checkbox"
+						className="checkbox"
 						id="remember_me"
 						{...register("remember_me")}
 					/>

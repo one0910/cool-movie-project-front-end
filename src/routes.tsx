@@ -6,11 +6,12 @@ import {
   Movie,
   Seats,
   Ticknumber, MemberInfo,
+  CheckPay,
   MemberAccount,
   MemberBonus,
   MemberOrder,
   Benifet,
-  AboutUs
+  AboutUs,
 } from "./pages"
 
 const routes: RouteObject[] = [
@@ -45,7 +46,7 @@ const routes: RouteObject[] = [
     ]
   },
   {
-    path: "/movie/:id",
+    path: "/movie/:id/:isRelease",
     element: <Movie />,
   },
   {
@@ -63,6 +64,10 @@ const routes: RouteObject[] = [
   {
     path: "/chooseSeates/:tickNumber",
     element: <Seats />,
+  },
+  {
+    path: "/checkpay",
+    element: <CheckPay />,
   },
   {
     path: "*",

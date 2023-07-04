@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { MemberContainer } from "../../components/MemberContainer";
 import { useForm } from "react-hook-form";
-import { I_ChangePassword } from "../../interface/member"
+import { I_ChangePassword } from "../../interface"
 import { changePassword } from "../../api/member";
 import { Loading } from "../../components";
-import { CatchErrorMessage } from "../../interface/member";
+import { CatchErrorMessage } from "../../interface";
 
 export const MemberAccount: React.FC = ({ }) => {
   const [isSubmitting, setIsSubmitting] = useState(false);

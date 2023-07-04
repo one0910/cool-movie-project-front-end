@@ -1,5 +1,5 @@
 import React from "react";
-interface FooterProps {}
+interface FooterProps { }
 
 export const Footer: React.FC<FooterProps> = () => {
   return (
@@ -25,7 +25,7 @@ export const Footer: React.FC<FooterProps> = () => {
                 </div>
               </div>
             </div>
-            <div className="col-lg-6 col-12 mt-4">
+            <div className="col-lg-6 col-12 mt-4 d-lg-block d-none">
               <div>爽影票影城</div>
               <ul className="footer-contact">
                 <li>02-8502-2208</li>

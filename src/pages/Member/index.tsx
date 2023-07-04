@@ -3,7 +3,7 @@ import { Outlet, NavLink } from "react-router-dom";
 import { getMember } from "../../api/member";
 import { format } from "date-fns";
 import { Loading } from "../../components";
-import { I_MEMBER } from "../../interface/member";
+import { I_MEMBER } from "../../interface";
 
 export const Member: React.FC = () => {
   const [isLoading, setLoading] = useState(false);
@@ -24,9 +24,7 @@ export const Member: React.FC = () => {
           const { birthday, email, nickName, phoneNumber, profilePic } =
             memberInfo;
           setMember({
-            birthday: birthday
-              ? format(new Date(birthday), "yyyy-MM-dd")
-              : "無資料",
+            birthday: birthday ? format(new Date(birthday), "yyyy-MM-dd") : "無資料",
             email: email || "無資料",
             nickName: nickName || "無資料",
             phoneNumber: phoneNumber || "無資料",

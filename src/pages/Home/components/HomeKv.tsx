@@ -24,8 +24,8 @@ export const HomeKv: React.FC<HomeKvProps> = ({ children }) => {
       >
         <SwiperSlide>
           <picture>
-            <source media="(max-width:375px)" srcSet="https://fakeimg.pl/375x480/?text=1" />
-            <img src="https://fakeimg.pl/1920x640/?text=1"/>
+            {/* <source media="(max-width:375px)" srcSet="https://fakeimg.pl/375x480/?text=1" /> */}
+            <img src="/images/home/banner.jpg" />
           </picture>
         </SwiperSlide>
       </Swiper>

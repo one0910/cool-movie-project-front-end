@@ -1,0 +1,115 @@
+.contactInfo .creditCardInput {
+  input {
+    text-align: left;
+    padding-left: 5px;
+  }
+
+  :nth-of-type(2) span,
+  :nth-of-type(1) span {
+    letter-spacing: 17px;
+  }
+}
+
+.creditCardInput {
+  span {
+    width: 123px;
+    white-space: nowrap;
+    display: inline-block;
+
+  }
+
+  :nth-of-type(2) span,
+  :nth-of-type(1) span {
+    letter-spacing: 8px;
+  }
+
+  :nth-of-type(4) span {
+    letter-spacing: 10px;
+  }
+
+  input {
+    text-align: center;
+    background-color: rgba(255, 255, 255, 0.1);
+    color: $textColor;
+    border-style: none;
+    border-radius: 3px;
+    outline: none;
+    caret-color: #fff;
+    padding: 3px 10px;
+    letter-spacing: 1px;
+    appearance: none;
+    margin: 0 0px 0 5px;
+
+    @media screen and (max-width: 768px) {
+      font-size: .8rem;
+      padding: 3px 1px;
+      margin: 0 0px 0 4px;
+      letter-spacing: 0px;
+    }
+  }
+
+  select {
+    border: $textColor 1px solid;
+    padding: 4px 16px 4px 8px;
+    border-radius: t 3px;
+    margin-left: 6px;
+    font-size: .9rem;
+    max-width: 190px;
+
+    @media screen and (max-width: 768px) {
+      font-size: .8rem;
+      width: 55%;
+    }
+  }
+}
+
+.creditCardImg {
+  max-width: 24%;
+
+  @media screen and (max-width: 768px) {
+    max-width: 42%;
+  }
+
+}
+
+.orderedMovieInfo {
+  div {
+    border-bottom: 1px solid #E7C67380;
+  }
+
+  :nth-of-type(1) span.title {
+    letter-spacing: 1px;
+    padding: 4px 3px 3px 5px;
+  }
+
+  span.title {
+    background-color: $primary;
+    padding: 2px 3px 2px 15px;
+    color: #111;
+    border-radius: 3px 3px 0px 0px;
+    letter-spacing: 12px;
+  }
+
+  div.seats {
+    span:nth-of-type(2) {
+      width: 68%;
+      text-align: right;
+
+      @media screen and (max-width: 768px) {
+        width: 57%;
+
+      }
+    }
+  }
+}
+
+.securityNum {
+  img {
+    width: 5%;
+    margin-left: 10px;
+
+    @media screen and (max-width: 768px) {
+      width: 8%;
+    }
+  }
+}

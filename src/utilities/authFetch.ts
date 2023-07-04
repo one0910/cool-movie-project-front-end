@@ -26,6 +26,7 @@ authFetch.interceptors.response.use(
     if (error.response?.status === 401) {
       window.location.replace('/')
     }
+    // return Promise.reject(message);
     return Promise.reject(error);
   }
 );

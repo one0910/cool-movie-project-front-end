@@ -15,7 +15,7 @@ export const Logout: React.FC<LogoutProps> = ({ isLogin, setIsLogin }) => {
 		localStorage.removeItem("userToken")
 		setIsLogin(false)
 		document.cookie = "remember_me=; SameSite=None; Secure; expires=Thu, 01 Jan 1970 00:00:00 UTC";
-		if (isLogin) {
+		if (isLogin || state.orderList.status === "member") {
 			dispatch({
 				type: "CLEAR_ORDER",
 				payload: {

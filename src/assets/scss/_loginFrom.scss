@@ -32,6 +32,11 @@ a {
 		top: -29px;
 		right: -29px;
 		cursor: pointer;
+
+		@media screen and (max-width: 768px) {
+			top: -25px;
+			right: -12px;
+		}
 	}
 }
 

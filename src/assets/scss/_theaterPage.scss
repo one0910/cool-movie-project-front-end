@@ -1,23 +1,69 @@
+.screenImg {
+	width: 75%;
+	margin: 22px 0 15px 0;
+
+	@media screen and (max-width: 768px) {
+		width: 100%;
+
+	}
+}
+
+.salseStatus {
+	span {
+		width: 20px;
+		height: 20px;
+		vertical-align: middle;
+	}
+
+	:nth-of-type(1) span {
+		background-color: rgba(185, 182, 182, 0.24);
+	}
+
+	:nth-of-type(2) span {
+		background-color: #E7C673;
+	}
+
+	:nth-of-type(3) span {
+		background-color: rgb(72, 0, 0);
+	}
+
+	:nth-of-type(4) span {
+		background-color: #DFB7F1;
+		border: 2px solid rgb(72, 0, 0);
+	}
+
+
+	strong {
+		font-size: .8rem;
+		font-weight: normal;
+	}
+}
+
 .theater {
+	width: 52%;
+	margin: auto;
 	// background-color: #fcc;
 	padding: 0px;
-	margin: 0px;
+	margin: 0px auto;
 	display: grid;
-	grid-template-columns: repeat(10, 80px);
-	/* grid-template-rows: repeat(2, 60px); */
-	grid-template-rows: 60px 60px;
+	// grid-template-columns: repeat(10, 80px);
+	// grid-template-rows: repeat(2, 60px);
+	// grid-template-rows: 60px 60px;
 
-	/* grid-template-columns: 1fr 2fr 1fr 1fr 2fr; */
-	/* font-size: 20px; */
+	grid-template-columns: 1fr 1fr 2fr 1fr 1fr 1fr 2fr 1fr 1fr 1fr;
+	// grid-template-columns: auto auto auto 2fr auto auto auto auto auto auto auto 2fr auto auto auto auto;
+
+	font-size: .5rem;
 	justify-content: center;
 	align-items: center;
 	grid-row-gap: 10px;
 	grid-column-gap: 10px;
+	font-weight: bolder;
 
 	@media screen and (max-width: 768px) {
-		grid-template-columns: repeat(10, 27px);
-		grid-template-rows: unset;
-
+		// grid-template-columns: repeat(10, 27px);
+		// grid-template-rows: unset;
+		width: 93%;
 	}
 
 	li {
@@ -25,14 +71,25 @@
 		justify-content: center;
 		align-items: center;
 		list-style-type: none;
-		width: 70px;
-		height: 70px;
-		clip-path: polygon(0 34%, 15% 34%, 15% 0%, 85% 0%, 85% 31%, 100% 31%, 100% 85%, 85% 85%, 15% 85%, 0% 85%);
+		width: 28px;
+		height: 28px;
+		border-radius: 50%;
+		cursor: pointer;
+		// clip-path: polygon(0 34%, 15% 34%, 15% 0%, 85% 0%, 85% 31%, 100% 31%, 100% 85%, 85% 85%, 15% 85%, 0% 85%);
 
 		@media screen and (max-width: 768px) {
-			font-size: 12px;
-			width: 35px;
-			height: 35px;
+			width: 19px;
+			height: 19px;
+			font-size: 0.5rem;
 		}
+	}
+
+	li.addScreenStyle {
+		background-color: #DFB7F1;
+		border: 2px solid rgb(72, 0, 0);
+	}
+
+	li.addScreenStyleOrder {
+		background-color: rgb(72, 0, 0);
 	}
 }

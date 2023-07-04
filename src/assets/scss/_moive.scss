@@ -1,0 +1,312 @@
+.movieBanner {
+  position: relative;
+
+
+  &::before {
+    content: "";
+    display: inline-block;
+    color: #000;
+    position: absolute;
+    left: 0%;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 3;
+    box-shadow: inset 0 0 0 0 #151728, inset 0 -80px 120px 0 #151728;
+    background-image: linear-gradient(80deg, rgba(0, 0, 0, 0.45) 0%, rgba(20, 15, 48, 0.2) 65%, rgba(20, 15, 48, 0.2) 75%, rgba(0, 0, 0, 0.7) 100%)
+  }
+
+  .palyIcon {
+    cursor: pointer;
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    top: 0px;
+    bottom: 0px;
+    margin: auto;
+    z-index: 4;
+    max-width: 104px;
+    max-height: 104px;
+
+    img {
+      width: 100%;
+      filter: contrast(48%)
+    }
+
+    @media screen and (max-width: 768px) {
+      max-width: 50px;
+      max-height: 50px;
+      top: unset;
+      left: unset;
+      right: 48px;
+      bottom: 40px;
+
+    }
+  }
+
+  picture img {
+    height: 450px;
+    width: 100%;
+    object-fit: cover;
+
+    @media screen and (max-width: 768px) {
+      height: auto;
+
+    }
+  }
+
+  .movieTitle {
+    position: absolute;
+    left: 0px;
+    right: 0px;
+    width: 200px;
+    margin: auto;
+    bottom: 24px;
+    z-index: 4;
+
+    p:nth-of-type(1) {
+      margin-bottom: .7rem;
+    }
+  }
+
+}
+
+.trailMovie {
+  width: 100%;
+  position: relative;
+
+  iframe {
+    width: inherit;
+    height: 22rem;
+
+    @media screen and (max-width: 768px) {
+      height: 14rem;
+    }
+  }
+
+
+  // @media screen and (max-width: 768px) {
+  //   width: 373px;
+  //   height: 229px;
+  // }
+
+  .bi.bi-x {
+    position: absolute;
+    font-size: 2rem;
+    top: -29px;
+    right: -29px;
+    cursor: pointer;
+
+    @media screen and (max-width: 768px) {
+      right: -6px;
+
+    }
+  }
+}
+
+form.screenFrom {
+  .screenFromTitle {
+    border-bottom: 1px solid rgba(231, 198, 115, 0.5019607843);
+
+    span {
+      letter-spacing: 3px;
+      color: #111;
+      border-radius: 3px 3px 0px 0px;
+      background-color: $primary;
+      padding: 7px 16px;
+      display: inline-block;
+    }
+  }
+
+  .theaterSize {
+    padding: 1px 8px 1px 19px;
+    letter-spacing: 11px;
+    border: 1px solid $primary;
+    color: $primary;
+    display: inline-block;
+    position: relative;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      width: 1px;
+      height: 65px;
+      top: 100%;
+      z-index: 1;
+      position: absolute;
+      left: 10px;
+      opacity: 1;
+      background: linear-gradient(180deg, rgba(21, 23, 40, 0) 20%, #151728);
+    }
+
+    &::after {
+      content: " ";
+      display: inline-block;
+      width: 1px;
+      background: $primary;
+      height: 65px;
+      position: absolute;
+      top: 100%;
+      opacity: 1;
+      left: 10px;
+    }
+  }
+
+  .screenTime {
+    display: flex;
+    flex-wrap: wrap;
+
+    span {}
+
+    input {
+      display: none;
+    }
+
+    label {
+      cursor: pointer;
+      border: 1px solid #9e9e9ed9;
+      padding: 8px 35px;
+      margin: 2px 0px 15px 11px;
+
+      @media screen and (max-width: 768px) {
+        padding: 5px 17px;
+        margin: 2px 0px 15px 11px;
+      }
+    }
+
+    :checked+label {
+      border: 1px solid $primary;
+      color: #000;
+      background-color: $primary;
+    }
+
+  }
+}
+
+.movieInfoWrap {
+  max-width: 1265px;
+  margin-bottom: 40px;
+
+
+  .movieInfoPart {
+    width: 36%;
+    margin-top: -145px;
+    z-index: 4;
+
+    img {
+      width: 100%;
+      border-radius: 5px 5px 0 0
+    }
+
+    @media screen and (max-width: 768px) {
+      margin-top: 0px;
+      width: 100%;
+
+    }
+
+    .movieDigesttWrap {
+      border-radius: 0px 0px 5px 5px;
+      background-color: $secondary-background;
+    }
+  }
+
+  .screenPart {
+    width: 64%;
+    padding-left: 3.3rem;
+    padding-top: 1rem;
+
+    .movieDescriptWrap {
+      max-height: 150px;
+      overflow: hidden;
+      overflow: hidden;
+      text-overflow: ellipsis;
+
+      .descript {
+        // display: none;
+        border-bottom: 1px solid rgba(231, 198, 115, 0.5019607843);
+
+        span {
+          letter-spacing: 3px;
+          color: #111;
+          border-radius: 3px 3px 0px 0px;
+          background-color: #E7C673;
+          padding: 7px 16px;
+          display: inline-block;
+        }
+      }
+
+    }
+
+    @media screen and (max-width: 768px) {
+      width: 100%;
+      margin-top: 1rem;
+      padding-left: 1rem;
+      padding-top: 0rem;
+    }
+  }
+}
+
+.movieCheckContainer {
+  width: 100%;
+  position: fixed;
+  bottom: 0px;
+  left: 0px;
+  z-index: 4;
+  border-top-style: solid;
+  // border-image: linear-gradient(90deg, rgb(141, 113, 41) 0.62%, rgb(231, 198, 115) 23.69%, rgb(221, 210, 172) 51.62%, rgb(231, 198, 115) 81.1%, rgb(141, 113, 41) 99.93%) 1 / 1 / 0 stretch;
+  border-width: 0px;
+  box-shadow: rgb(255, 255, 255) 0px 0px 5px, rgb(255, 255, 255) 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px, rgb(255, 255, 255) 0px 0px 0px;
+
+  .navbar {
+    padding-top: 0.3rem;
+    padding-bottom: .3rem;
+  }
+
+  .movieImg {
+    width: 52px;
+    height: 52px;
+
+    object-fit: cover;
+    border-radius: 3px;
+    border: 1px solid #E7C6738F;
+  }
+
+  .movieCheckName {
+    font-size: 1.25rem;
+
+    @media screen and (max-width: 768px) {
+      font-size: .9rem;
+    }
+  }
+
+  .movieCheckScreen {
+    @media screen and (max-width: 768px) {
+      padding: 0px;
+      font-size: .8rem;
+    }
+  }
+
+  .movieCheckNext {
+    button {
+      height: 82%;
+      width: 30%;
+
+      &:disabled {
+        background-color: #80808085;
+        color: #999;
+        border: 1px solid gray;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      padding: 0px;
+      margin: 0px;
+      font-size: .9rem;
+
+      button {
+        height: auto;
+        width: 100%;
+      }
+    }
+  }
+}

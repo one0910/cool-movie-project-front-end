@@ -10,7 +10,7 @@ import { format } from "date-fns";
 import { OrderContext } from "../../store";
 import { uploadImage } from "../../api/image";
 import { validateFile } from "../../utilities/validate";
-import { I_MEMBER, I_FormData } from "../../interface/member";
+import { I_MEMBER, I_FormData } from "../../interface";
 
 export const MemberInfo: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -44,8 +44,7 @@ export const MemberInfo: React.FC = () => {
         setMember((member) => {
           return {
             ...member,
-            birthday:
-              format(new Date(newFormData.birthday), "yyyy-MM-dd") || "無資料",
+            birthday: format(new Date(newFormData.birthday), "yyyy-MM-dd") || "無資料",
             email: newFormData.email || "無資料",
             nickName: newFormData.nickName || "無資料",
             phoneNumber: newFormData.phoneNumber || "無資料",

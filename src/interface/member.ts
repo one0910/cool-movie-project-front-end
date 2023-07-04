@@ -25,7 +25,15 @@ export interface CatchErrorMessage {
     };
 }
 
-export interface I_ChangePassword{
+export interface I_ChangePassword {
     password: string;
     confirmPassword: string;
+}
+
+export interface MovieDataType {
+    _id: string;
+    actors: [][];
+    imgs: [][];
+    name: string;
+    releaseData: string;
 }

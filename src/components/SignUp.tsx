@@ -4,7 +4,7 @@ import { useForm, useWatch } from "react-hook-form"
 import { authFetch } from '../utilities';
 import { SignInType } from './';
 import { Loading, ErrorMsg } from './';
-import { CatchErrorMessage } from '../interface/member';
+import { CatchErrorMessage } from '../interface';
 
 interface SignUpPropsType {
 	myModal: MutableRefObject<bootstrap.Modal | null>
@@ -64,16 +64,29 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 				const userToken = response.data.data.token
 				const userId = response.data.data.createRes._id
 				const userName = response.data.data.createRes.nickName
+				const quantity = (state.orderList.quantity) ? state.orderList.quantity : 1
+				const price = (state.orderList.price > 0) ? (state.orderList.price) - 50 : state.orderList.price
 				localStorage.setItem('userToken', userToken)
 				document.cookie = "remember_me=true; SameSite=None; Secure";
+				// 註冊後，將會員名稱、會員ID、會員狀態、價格重新寫入store
 				dispatch({
 					type: "ADD_MEMBER_DATA",
 					payload: {
 						memberId: userId,
 						memberName: userName,
+						price: price,
 						status: "member"
 					}
 				})
+				// 註冊後，總價重新寫入store
+				dispatch({
+					type: "SET_TOTAL_PRICE",
+					payload: {
+						quantity: quantity,
+						total: (state.orderList.quantity) * (price),
+					},
+				});
+
 
 				myModal.current?.hide();
 				document.querySelector(".modal-backdrop")?.remove();
