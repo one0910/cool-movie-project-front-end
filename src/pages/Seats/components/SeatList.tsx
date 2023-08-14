@@ -27,10 +27,10 @@ const Li = styled.li<SeatStatusType>`
 
 interface SeatListProps extends SeatsType {
 	index: number
-	seatNumRef: MutableRefObject<number>
-	setSeatsReady: Dispatch<React.SetStateAction<boolean>>
+	seatNumRef?: MutableRefObject<number>
+	setSeatsReady?: Dispatch<React.SetStateAction<boolean>>
 
-	onClick: (
+	onClick?: (
 		seat_id: string,
 		selectRef: MutableRefObject<boolean>,
 		DomRef: MutableRefObject<HTMLLIElement | null>,
@@ -44,8 +44,8 @@ export const SeatList: React.FC<SeatListProps> = ({ setSeatsReady, seatNumRef, s
 	// console.log(' index=> ', index)
 	// console.log(' seatNumRef=> ', seatNumRef)
 	useEffect(() => {
-		if (index === seatNumRef.current - 1) {
-			setSeatsReady(true)
+		if (seatNumRef && index === seatNumRef.current - 1) {
+			setSeatsReady?.(true)
 		}
 	}, [])
 
@@ -58,7 +58,7 @@ export const SeatList: React.FC<SeatListProps> = ({ setSeatsReady, seatNumRef, s
 			alert("該座位剛剛已被訂位")
 		}
 		else if (is_booked === false) {
-			onClick(seat_id, selectRef, DomRef, index)
+			onClick?.(seat_id, selectRef, DomRef, index)
 		}
 		else {
 			alert("該座位已被訂位")

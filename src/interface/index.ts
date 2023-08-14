@@ -80,3 +80,19 @@ export interface CompleteResDataType {
 	OrderId: string,
 	OrderSeat: string,
 }
+
+export interface OrderDataType {
+	id: string
+	theater_size: string,
+	movieId: string,
+	movieName: string,
+	movielevel: string,
+	moviePlayDate: string,
+	moviePlayTime: string,
+	seatOrdered: [],
+	price: number,
+	quantity: number,
+	total: number,
+	payMethod: string
+	createTime: string
+}

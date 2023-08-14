@@ -35,7 +35,11 @@ export const Ticknumber: React.FC<OrderFastProps> = ({ }) => {
 				leave: true
 			});
 		}
+		if (window.scrollY > 0) {
+			window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
+		}
 	}, [])
+
 	// 隨時監控是否為登入狀態
 	useEffect(() => {
 		if (state.orderList.status === "member") {

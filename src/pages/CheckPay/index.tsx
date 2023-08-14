@@ -23,14 +23,15 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
   const navigate = useNavigate();
   const watchForm = useWatch({ control });
   const location = useLocation();
-  const url = process.env.REACT_APP_REMOTE_URL || "http://localhost:3000"
+  const url = process.env.REACT_APP_REMOTE_URL || "http://localhost:3000";
+  const orderId = useRef<string>("")
 
   // 進入該頁時，載入銀行的代碼
   useEffect(() => {
 
     setLoading(true)
     socketIoRef.current = io(url, { transports: ['websocket'] });
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     dispatch({
       type: "SET_LAST_PAGE",
       payload: {
@@ -51,7 +52,7 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
   //隨時監控form，若有錯誤，scroll移到最上方
   useEffect(() => {
     if (errors) {
-      window.scrollTo({ top: 0, behavior: 'auto' });
+      window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     }
   }, [watchForm])
 
@@ -63,37 +64,43 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
   // 按下結帳
   const clickCheckPay = (data: CreditCardType) => {
     setLoading(true);
+    let orderData = {
+      "status": state.orderList.status,
+      "phoneNumber": (data.phoneNumber) ? data.phoneNumber : "",
+      "email": (data.email) ? data.email : "",
+      "memberId": state.orderList.memberId,
+      "memberName": state.orderList.memberName,
+      "movieId": state.orderList.movieId,
+      "movie_name": state.orderList.movie_name,
+      "movie_date": state.orderList.movie_date,
+      "movie_time": state.orderList.movie_time,
+      "movie_level": state.orderList.movie_level,
+      "screenId": state.orderList.screenId,
+      "seatOrdered": state.orderList.seat_ordered,
+      "theater_size": state.orderList.theater_size,
+      "quantity": state.orderList.quantity,
+      "price": state.orderList.price,
+      "total": state.total,
+      "payMethod": "信用卡",
+      "orderId": ""
+    };
 
     (async function () {
       try {
-        let response = await authFetch.post(`api/order`, {
-          "status": state.orderList.status,
-          "phoneNumber": (data.phoneNumber) ? data.phoneNumber : "",
-          "email": (data.email) ? data.email : "",
-          "memberId": state.orderList.memberId,
-          "memberName": state.orderList.memberName,
-          "movieId": state.orderList.movieId,
-          "movie_name": state.orderList.movie_name,
-          "movie_date": state.orderList.movie_date,
-          "movie_time": state.orderList.movie_time,
-          "movie_level": state.orderList.movie_level,
-          "screenId": state.orderList.screenId,
-          "seatOrdered": state.orderList.seat_ordered,
-          "theater_size": state.orderList.theater_size,
-          "quantity": state.orderList.quantity,
-          "price": state.orderList.price,
-          "total": state.total,
-        })
-        setTimeout(() => {
-          setIsPayComplete(true)
-          setCompleteResData(response.data.data)
-          setLoading(false);
-          socketIoRef?.current?.emit("order", {
-            socketId: state.orderList.socketId,
-            screenId: state.orderList.screenId,
-            seatOrderedIndex: state.orderList.seat_orderedIndex,
-          });
-        }, 1000)
+        let response = await authFetch.post(`api/order`, orderData)
+
+        // 再把回傳的orderId寫回到orderData，用以傳送MAIL相關訂單明細
+        orderData.orderId = response.data.data.OrderId;
+        setIsPayComplete(true)
+        setCompleteResData(response.data.data)
+        socketIoRef?.current?.emit("order", {
+          socketId: state.orderList.socketId,
+          screenId: state.orderList.screenId,
+          seatOrderedIndex: state.orderList.seat_orderedIndex,
+        });
+        setLoading(false);
+        authFetch.post(`api/mail/orderMail`, orderData)
+
       } catch (error) {
         console.log('catch_error', error);
       }
@@ -132,55 +139,67 @@ export const CheckPay: React.FC<CheckPayProps> = ({ }) => {
           <span>{`${getValues().creditCardNumber1}-${getValues().creditCardNumber2}-${getValues().creditCardNumber3}-${getValues().creditCardNumber4}`}</span>
         </div>
         <div className='d-flex justify-content-between'>
-          <span>總計</span>
+          <span>費用總計</span>
           <span>${state.total}</span>
         </div>
         <div className='d-flex justify-content-between'>
           <button type='button' className='btn_primary mt-4 me-1 w-100' onClick={() => {
             if (window.scrollY > 0) {
-              window.scrollTo({ top: 0, behavior: 'auto' });
+              window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
             }
             popUpwindowRef.current?.closeModal()
-          }}>取消</button>
+          }}>取消
+          </button>
           <button type='button' className='btn_primary mt-4 ms-1 w-100' onClick={handleSubmit(clickCheckPay)}>結帳</button>
         </div>
       </ScreenCheck >
   } else {
     screenContent = <MessageBox >
-      <>
-        <div className='text-center'>
-          <i className="bi bi-ticket-perforated color-primary fw-bold fs-2 me-3"></i>
-          <strong className='color-primary fs-2'>訂票完成</strong>
+      <div className='text-center'>
+        <i className="bi bi-ticket-perforated color-primary fw-bold fs-2 me-3"></i>
+        <strong className='color-primary fs-2'>訂票完成</strong>
+      </div>
+      <div className='orderedMovieInfo mt-3 mb-3 px-lg-4 py-lg-3 px-2 py-2 rounded'>
+        <div className='d-flex justify-content-between'>
+          <span className='title'>訂單編號</span>
+          <span>{completeResData?.OrderId}</span>
         </div>
-        <div className='orderedMovieInfo mt-3 mb-3 px-lg-4 py-lg-3 px-2 py-2 rounded'>
-          <div className='d-flex justify-content-between'>
-            <span className='title'>訂單編號</span>
-            <span>{completeResData?.OrderId}</span>
-          </div>
-          <div className='d-flex justify-content-between mt-3'>
-            <span className='title'>電影</span>
-            <span>{completeResData?.MovieName}</span>
-          </div>
-          <div className='d-flex justify-content-between my-3'>
-            <span className='title'>場次</span>
-            <span>{`${completeResData?.MoviePlayDate}  ${completeResData?.MoviePlayTime}`}</span>
-          </div>
-          <div className='d-flex justify-content-between align-items-center seats'>
-            <span className='title'>座位</span>
-            <span>{completeResData?.OrderSeat}</span>
-          </div>
+        <div className='d-flex justify-content-between mt-3'>
+          <span className='title'>電影</span>
+          <span>{completeResData?.MovieName}</span>
         </div>
-        <p className='mt-2 text-start text-lg-center'>可至您的電子信箱或使用本站查詢功能查閱您的訂票記錄</p>
+        <div className='d-flex justify-content-between my-3'>
+          <span className='title'>場次</span>
+          <span>{`${completeResData?.MoviePlayDate}  ${completeResData?.MoviePlayTime}`}</span>
+        </div>
+        <div className='d-flex justify-content-between align-items-center seats'>
+          <span className='title'>座位</span>
+          <span>{completeResData?.OrderSeat}</span>
+        </div>
+      </div>
+      <p className='mt-2 text-start text-lg-center'>可至您的電子信箱或使用本站查詢功能查閱您的訂票記錄</p>
+
+      {(state.orderList.status === "member") ?
+        <div className='d-flex justify-content-between'>
+          <button type='button' className='btn_primary mt-4 me-1 w-100' onClick={() => {
+            popUpwindowRef.current?.closeModal()
+            navigate('/member')
+          }}>會員中心
+          </button>
+          <button type='button' className='btn_primary mt-4 ms-1 w-100' onClick={() => {
+            popUpwindowRef.current?.closeModal()
+            navigate('/')
+          }}>確定
+          </button>
+        </div> :
         <button className='btn_primary me-1 w-100 mt-2' onClick={() => {
           popUpwindowRef.current?.closeModal()
           navigate('/')
         }}>確定</button>
-      </>
+      }
     </MessageBox>
 
   }
-
-
 
   /*信用卡號錯誤補捉訊息判斷*/
   if (errors.creditCardNumber1?.message === "請輸入卡號" || errors.creditCardNumber2?.message === "請輸入卡號" || errors.creditCardNumber3?.message === "請輸入卡號" || errors.creditCardNumber4?.message === "請輸入卡號") {

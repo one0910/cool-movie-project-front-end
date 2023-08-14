@@ -23,6 +23,7 @@ const convertPlayDateFormat = (palyDate: string) => {
   return {
     year,
     date: dateFormatted,
+    dateNoweekday: `${year}/${month}/${day}`,
     time: `${hours}:${minutes}`
   }
 }

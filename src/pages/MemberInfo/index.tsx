@@ -15,6 +15,7 @@ import { I_MEMBER, I_FormData } from "../../interface";
 export const MemberInfo: React.FC = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [_, dispatch] = useContext(OrderContext);
+  const isGoogleMember = (_.orderList.googleId) ? true : false
   // 表單資料
   const { member, setMember } = useOutletContext<{
     member: I_MEMBER;
@@ -31,7 +32,6 @@ export const MemberInfo: React.FC = () => {
   useEffect(() => {
     reset(member);
   }, [member]);
-
   const onSubmit = async (formData: I_FormData) => {
     setIsSubmitting(true);
     try {
@@ -206,6 +206,7 @@ export const MemberInfo: React.FC = () => {
                 className="input"
                 autoComplete="off"
                 placeholder="請輸入信箱"
+                disabled={isGoogleMember}
                 {...register("email", {
                   required: "請輸入信箱",
                   pattern: {

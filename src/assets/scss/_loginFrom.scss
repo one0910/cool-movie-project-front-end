@@ -23,7 +23,6 @@ a {
 
 	@media screen and (max-width: 768px) {
 		width: 90%;
-
 	}
 
 	.bi.bi-x {
@@ -209,4 +208,23 @@ a {
 .form-wrap .help-text p {
 	text-align: center;
 	font-size: 14px;
+}
+
+.cross-line {
+
+	&::before,
+	&::after {
+		content: '';
+		display: block;
+		flex-grow: 1;
+		border-top: 1px solid #CFCFCF78;
+		transform: translate(0%, 50%);
+	}
+
+	span {
+		// color: #CFCFCF78;
+		padding: 0 15px;
+		border-top: none;
+		border-bottom: none;
+	}
 }

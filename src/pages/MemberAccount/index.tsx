@@ -39,7 +39,7 @@ export const MemberAccount: React.FC = ({ }) => {
   return (
     <>
       <Loading isActive={isSubmitting}></Loading>
-      <MemberContainer title="帳號設定">
+      <MemberContainer title="修改密碼">
         <div className="MemberAccount">
           <form className="MemberAccount-form d-flex flex-column" onSubmit={handleSubmit(onSubmit)}>
             <div className="mb-2">

@@ -5,6 +5,7 @@ import { authFetch } from '../utilities';
 import { SignInType } from './';
 import { Loading, ErrorMsg } from './';
 import { CatchErrorMessage } from '../interface';
+import { AxiosResponse } from 'axios';
 
 interface SignUpPropsType {
 	myModal: MutableRefObject<bootstrap.Modal | null>
@@ -51,6 +52,45 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 		}
 	}, [watchForm]);
 
+
+	/******************登入後，將後傳回來的資料做處理*******************/
+	const setDataUI = (response: AxiosResponse<any, any>) => {
+		console.log(' response=> ', response)
+		const userToken = response.data.data.token
+		const userId = response.data.data.signinRes._id
+		const userName = response.data.data.signinRes.nickName
+		const quantity = (state.orderList.quantity) ? state.orderList.quantity : 1
+		const price = (state.orderList.price > 0) ? (state.orderList.price) - 50 : state.orderList.price
+		const googleId = (response.data.data.signinRes.googleId) ? response.data.data.signinRes.googleId : ""
+		localStorage.setItem('userToken', userToken)
+		document.cookie = "remember_me=true; SameSite=None; Secure";
+		// 註冊後，將會員名稱、會員ID、會員狀態、價格重新寫入store
+		dispatch({
+			type: "ADD_MEMBER_DATA",
+			payload: {
+				memberId: userId,
+				memberName: userName,
+				price: price,
+				status: "member",
+				googleId: googleId
+			}
+		})
+		// 註冊後，總價重新寫入store
+		dispatch({
+			type: "SET_TOTAL_PRICE",
+			payload: {
+				quantity: quantity,
+				total: (state.orderList.quantity) * (price),
+			},
+		});
+
+
+		myModal.current?.hide();
+		document.querySelector(".modal-backdrop")?.remove();
+		setloading(false)
+		setIsLogin(true)
+	}
+
 	/***********************表單寄送**************************/
 	const signUpForm = (data: SingUpType) => {
 		(async function () {
@@ -61,37 +101,37 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 					email: data.useremail,
 					password: data.password
 				})
-				const userToken = response.data.data.token
-				const userId = response.data.data.createRes._id
-				const userName = response.data.data.createRes.nickName
-				const quantity = (state.orderList.quantity) ? state.orderList.quantity : 1
-				const price = (state.orderList.price > 0) ? (state.orderList.price) - 50 : state.orderList.price
-				localStorage.setItem('userToken', userToken)
-				document.cookie = "remember_me=true; SameSite=None; Secure";
-				// 註冊後，將會員名稱、會員ID、會員狀態、價格重新寫入store
-				dispatch({
-					type: "ADD_MEMBER_DATA",
-					payload: {
-						memberId: userId,
-						memberName: userName,
-						price: price,
-						status: "member"
-					}
-				})
-				// 註冊後，總價重新寫入store
-				dispatch({
-					type: "SET_TOTAL_PRICE",
-					payload: {
-						quantity: quantity,
-						total: (state.orderList.quantity) * (price),
-					},
-				});
+				// const userToken = response.data.data.token
+				// const userId = response.data.data.createRes._id
+				// const userName = response.data.data.createRes.nickName
+				// const quantity = (state.orderList.quantity) ? state.orderList.quantity : 1
+				// const price = (state.orderList.price > 0) ? (state.orderList.price) - 50 : state.orderList.price
+				// localStorage.setItem('userToken', userToken)
+				// document.cookie = "remember_me=true; SameSite=None; Secure";
+				// // 註冊後，將會員名稱、會員ID、會員狀態、價格重新寫入store
+				// dispatch({
+				// 	type: "ADD_MEMBER_DATA",
+				// 	payload: {
+				// 		memberId: userId,
+				// 		memberName: userName,
+				// 		price: price,
+				// 		status: "member"
+				// 	}
+				// })
+				// // 註冊後，總價重新寫入store
+				// dispatch({
+				// 	type: "SET_TOTAL_PRICE",
+				// 	payload: {
+				// 		quantity: quantity,
+				// 		total: (state.orderList.quantity) * (price),
+				// 	},
+				// });
 
-
-				myModal.current?.hide();
-				document.querySelector(".modal-backdrop")?.remove();
-				setloading(false)
-				setIsLogin(true)
+				// myModal.current?.hide();
+				// document.querySelector(".modal-backdrop")?.remove();
+				// setloading(false)
+				// setIsLogin(true)
+				setDataUI(response)
 			} catch (error) {
 				setloading(false)
 				const CatchErrorMessage = error as CatchErrorMessage
@@ -104,6 +144,33 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 				}
 			}
 		}())
+	}
+
+	/*******************當按下google註冊時的按鈕*********************/
+	const openGoogleLogin = () => {
+		let timer: NodeJS.Timeout | null = null;
+		const googleLoginURL = `${process.env.REACT_APP_REMOTE_URL}/api/google/login`;
+		const newWindow = window.open(
+			googleLoginURL,
+			"_blank",
+			"width=500,height=600"
+		)
+		if (newWindow) {
+			timer = setInterval(() => {
+				if (newWindow.closed) {
+					(async function () {
+						try {
+							let response = await authFetch.get('/api/google/login/success', { withCredentials: true })
+							setDataUI(response)
+						} catch (error) {
+							console.log('error', error);
+						}
+					}())
+					myModal.current?.hide();
+					if (timer) clearInterval(timer);
+				}
+			}, 500);
+		}
 	}
 
 	let messageDiv = null;
@@ -127,6 +194,11 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 			<Loading isActive={loading} />
 			<div id="signup-tab-content">
 				<form className="signup-form" onSubmit={handleSubmit(signUpForm)}>
+					<button type="button" className="button mt-3" onClick={openGoogleLogin} style={{ "letterSpacing": "1px" }}>
+						<i className="bi bi-google me-1"></i>
+						使用Google帳號登入
+					</button >
+					<div className='d-flex cross-line my-2'><span>或</span></div>
 					<input
 						type="text"
 						className={`input ${errors.username && 'is-invalid'}`}

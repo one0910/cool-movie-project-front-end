@@ -91,9 +91,9 @@ select {
 	border: 1px solid $primary;
 
 	&:hover {
-		background-color: transparent;
+		background-color: transparent !important;
 		color: $primary;
-		border: 1px solid $primary;
+		border: 1px solid $primary !important;
 	}
 
 	&:focus {

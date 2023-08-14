@@ -25,7 +25,7 @@ export const Home: React.FC<HomeProps> = ({ }) => {
 
   useEffect(() => {
     setLoading(true);
-    window.scrollTo({ top: 0, behavior: 'auto' });
+    window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
     (async function () {
       (async function () {
         try {
@@ -65,7 +65,6 @@ export const Home: React.FC<HomeProps> = ({ }) => {
               // navigation={true}
               // modules={[Pagination, Navigation]}
               >
-                {/* {[1, 2, 3, 4, 5, 6, 7].map((item, index) => { */}
                 {movieReleaseData.map((movie, index) => {
                   return (
                     <SwiperSlide key={index}>
@@ -85,7 +84,6 @@ export const Home: React.FC<HomeProps> = ({ }) => {
               spaceBetween={24}
               centeredSlides={false}
             >
-              {/* {[1, 2, 3, 4, 5, 6, 7].map((item, index) => { */}
               {movieCommingData.map((movie, index) => {
                 return (
                   <SwiperSlide key={index}>

@@ -1,5 +1,6 @@
 import type { RouteObject } from "react-router-dom";
 import { Navigate } from "react-router-dom";
+import { GoogleLoginComplete } from "./components/GoogleLoginComplete";
 import {
   Home,
   Member,
@@ -68,6 +69,14 @@ const routes: RouteObject[] = [
   {
     path: "/checkpay",
     element: <CheckPay />,
+  },
+  {
+    path: "/googleLogin/success",
+    element: <GoogleLoginComplete />,
+  },
+  {
+    path: "/googleLogin/error",
+    element: <GoogleLoginComplete />,
   },
   {
     path: "*",

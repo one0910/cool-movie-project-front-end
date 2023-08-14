@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import { OrderContext } from "../store";
 
 interface HamburgerMenuProps {
   isLogin: boolean;
@@ -18,6 +19,8 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
     navigate(path);
     setIsOpen(false);
   };
+  const [state, dispatch] = useContext(OrderContext);
+  const googleId = (state.orderList.googleId) ? true : false
   return (
     <>
       <div
@@ -87,7 +90,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
                   onClick={() => navigateHandler("/member/order")}
                   role="button"
                 >
-                  訂票紀錄
+                  修改密碼
                 </p>
               </li>
               <li>

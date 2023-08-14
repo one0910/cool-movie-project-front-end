@@ -17,6 +17,7 @@ const PopUpWrap = styled.div<{ wrapStatus?: string }>`
       background-color: ${props => (props.wrapStatus === "youtube") ? "rgba(0, 0, 0, 0.81)" : "#0F0F0F"};
     }
   }
+
   .modal-body aside{
     background-color: #0F0F0F;
   }
@@ -54,7 +55,7 @@ const PopUpWindows = forwardRef(({ status, backgroundClose, children }: PopUpWin
   return (
     <PopUpWrap wrapStatus={status}>
       <div className="modal fade" id="staticBackdrop" data-bs-keyboard="false" data-bs-backdrop={backgroundClose} tabIndex={-1} ref={modalRef}>
-        <div className="modal-dialog">
+        <div className={`${(status === 'homeCheckSeat') ? 'modal-dialog modal-lg' : 'modal-dialog '}`}>
           <div className="modal-content modelWrap">
             <div className="modal-body">
               {children}

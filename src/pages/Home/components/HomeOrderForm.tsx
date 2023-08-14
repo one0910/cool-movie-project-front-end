@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState, Dispatch, SetStateAction } from "react";
+import React, { useRef, useContext, useEffect, useState, Dispatch, SetStateAction } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { authFetch } from "../../../utilities";
@@ -7,6 +7,9 @@ import { OrderType } from "../../../store/";
 import { ThemeContext } from "styled-components";
 import { GloabalThemeCSS } from "../../../interface";
 import { MovieLevelColor } from "../../../assets/GlobalStyle";
+import { PopUpWindows, MessageBox } from "../../../components";
+import { PopUpwindowRefType } from "../../../interface";
+import { HomeScreenCheck } from "./HomeScreenCheck";
 interface OrderFormProps { }
 
 interface AvailableMoviesType {
@@ -26,9 +29,11 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
   const { setTheme } = useContext<GloabalThemeCSS>(ThemeContext)
   const { register, getValues, setValue, handleSubmit, control, formState: { errors } } = useForm<OrderType>();
   const [loading, setLoading] = useState(false)
+  const popUpwindowRef = useRef<PopUpwindowRefType | null>(null);
+  const screenDataRef = useRef<{ screenId: string, movieName: string, screenTime: string, }>({ screenId: "", movieName: "", screenTime: "" })
   const watchForm = useWatch({
     control,
-    name: ['movie_name', 'movie_date']
+    name: ['movie_name', 'movie_date', "movie_time"]
   });
   const [availableMovies, setAvailableMovies] = useState<AvailableMoviesType[]>([])
   const [moviePlayDate, setMoviePlayDate] = useState<AvailableMoviesType[]>([])
@@ -37,8 +42,10 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
 
   useEffect(() => {
     const userId = state.orderList.memberId ? state.orderList.memberId : null;
+    const googleId = state.orderList.googleId ? state.orderList.googleId : null;
     const memberStatus = state.orderList.memberId ? "member" : "quick";
     const memberName = state.orderList.memberName ? state.orderList.memberName : "";
+
     /*一進首頁，先清空全域的電影級別顏色*/
     setTheme({ movieLevel: "", theaterSize: "" })
 
@@ -47,6 +54,7 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
       type: "CLEAR_ORDER",
       payload: {
         memberId: userId,
+        googleId: googleId,
         status: memberStatus,
         memberName: memberName,
       },
@@ -100,9 +108,28 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
       }())
     }
   }, [getValues().movie_date])
+  const openScreenSeat = (data: OrderType) => {
+    const movie = (JSON.parse(data.movie_name).movie_name).split(") ")
+    const theater_size = movie[0].replace("(", "")
+    const movie_name = movie[1]
+    const movie_date = JSON.parse(data.movie_date).date
+    const movie_time = JSON.parse(data.movie_time).movieTime
+    screenDataRef.current =
+    {
+      screenId: `${JSON.parse(data.movie_time).screenId}`,
+      movieName: `${movie_name} (${theater_size})`,
+      screenTime: `${movie_date} ${movie_time}`,
+    }
+    popUpwindowRef.current?.openModal();
+    setTheme((currentTheme) => ({
+      ...currentTheme,
+      theaterSize: theater_size,
+    }))
+  }
 
   /******************在此處處理提交表單***************************/
   const onSubmit = (data: OrderType) => {
+    popUpwindowRef.current?.closeModal()
     const movie = (JSON.parse(data.movie_name).movie_name).split(") ")
     const theater_size = movie[0].replace("(", "")
     const movieId = JSON.parse(data.movie_time).movieId
@@ -234,8 +261,21 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
             <p className="errorMsg">{errors.movie_time.message}</p>
           )}
         </div>
-        <button type="submit">前往訂票</button>
+        <button type="submit" className="rounded">前往訂票</button>
+        <button type="button" className="rounded" onClick={handleSubmit(openScreenSeat)} disabled={(getValues().movie_time) ? false : true} >座位查詢</button>
       </form>
+      <PopUpWindows ref={popUpwindowRef} backgroundClose={true} status={"homeCheckSeat"}>
+        <MessageBox>
+          <HomeScreenCheck screenDataRef={screenDataRef.current} />
+          <div className='d-flex justify-content-center'>
+            <button type='button' className='btn_primary mt-4 me-2 w-25' onClick={() => {
+              popUpwindowRef.current?.closeModal()
+            }}>確定
+            </button>
+            <button type='button' className='btn_primary mt-4 ms-2 w-25' onClick={handleSubmit(onSubmit)}>前往訂票</button>
+          </div>
+        </MessageBox>
+      </PopUpWindows >
     </div>
   );
 };

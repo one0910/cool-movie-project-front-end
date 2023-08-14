@@ -1,7 +1,6 @@
 import React, { useContext, useState, useEffect, useRef } from 'react'
 import { useParams, useNavigate } from 'react-router-dom';
 import { OrderContext } from '../../store';
-import * as bootstrap from 'bootstrap';
 import { authFetch, convertTimeFormat, convertPlayDateFormat } from '../../utilities';
 import { Loading } from '../../components';
 import { MovieDataType, GloabalThemeCSS, PopUpwindowRefType } from '../../interface';
@@ -55,7 +54,7 @@ export const Movie: React.FC<MovieInfoProps> = ({ }) => {
 		(async function () {
 			setLoading(true)
 			if (window.scrollY > 0) {
-				window.scrollTo({ top: 0, behavior: 'auto' });
+				window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
 			}
 			try {
 				const response = await authFetch.get(`/api/movie/?isRelease=${isRelease}&id=${id}`)

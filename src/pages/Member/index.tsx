@@ -1,12 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Outlet, NavLink } from "react-router-dom";
 import { getMember } from "../../api/member";
 import { format } from "date-fns";
 import { Loading } from "../../components";
 import { I_MEMBER } from "../../interface";
+import { OrderContext } from "../../store";
+
 
 export const Member: React.FC = () => {
   const [isLoading, setLoading] = useState(false);
+  const [state, dispatch] = useContext(OrderContext);
+  const isGoogleMember = (state.orderList.googleId) ? true : false
   const [member, setMember] = useState<I_MEMBER>({
     birthday: "",
     email: "",
@@ -75,9 +79,12 @@ export const Member: React.FC = () => {
                   個人檔案
                 </NavLink>
               </li>
-              <li>
-                <NavLink to={`/member/account`}>帳號設定</NavLink>
-              </li>
+              {(!isGoogleMember) &&
+                <li>
+                  <NavLink to={`/member/account`}>修改密碼</NavLink>
+                </li>
+              }
+
               <li>
                 <NavLink to={`/member/order`}>訂票紀錄</NavLink>
               </li>

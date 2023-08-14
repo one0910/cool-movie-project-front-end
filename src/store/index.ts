@@ -3,6 +3,7 @@ import { createContext, useReducer, Dispatch } from "react";
 
 // 定義我們的狀態型別
 export interface OrderType {
+  googleId?: string
   memberId: string | null
   memberName: string,
   screenId: string

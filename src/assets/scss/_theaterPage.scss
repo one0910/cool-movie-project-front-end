@@ -46,10 +46,6 @@
 	padding: 0px;
 	margin: 0px auto;
 	display: grid;
-	// grid-template-columns: repeat(10, 80px);
-	// grid-template-rows: repeat(2, 60px);
-	// grid-template-rows: 60px 60px;
-
 	grid-template-columns: 1fr 1fr 2fr 1fr 1fr 1fr 2fr 1fr 1fr 1fr;
 	// grid-template-columns: auto auto auto 2fr auto auto auto auto auto auto auto 2fr auto auto auto auto;
 
@@ -58,7 +54,7 @@
 	align-items: center;
 	grid-row-gap: 10px;
 	grid-column-gap: 10px;
-	font-weight: bolder;
+	// font-weight: bolder;
 
 	@media screen and (max-width: 768px) {
 		// grid-template-columns: repeat(10, 27px);

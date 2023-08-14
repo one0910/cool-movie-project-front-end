@@ -6,6 +6,9 @@ const Container = styled.div`
   padding: 20px 30px;
   border-radius: 8px;
   background-color: rgb(42, 42, 42);
+  @media screen and (max-width: 768px){
+    padding: 20px 18px;
+  }
 `;
 
 const Title = styled.div`

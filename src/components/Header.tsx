@@ -27,10 +27,12 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
           try {
             let response = await authFetch.get("/api/member/getUser");
             const userName = response.data.data.nickName;
+            const googleId = (response.data.data.googleId) ? response.data.data.googleId : null
             dispatch({
               type: "ADD_MEMBER_DATA",
               payload: {
                 memberId: userId,
+                googleId: googleId,
                 memberName: userName,
                 status: "member",
               },

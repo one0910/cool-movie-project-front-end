@@ -73,7 +73,7 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 				seatNumRef.current = response.data.data[0].seatsStatus.length
 				setLoading(false)
 				if (window.scrollY > 0) {
-					window.scrollTo({ top: 0, behavior: 'auto' });
+					window.scrollTo({ top: 0, left: 0, behavior: 'auto' });
 				}
 			} catch (error) {
 				console.log('error', error);
@@ -84,7 +84,6 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 
 	/*當一進入選位頁面時，監聽socket的頻道, 是否有其他使用者在劃位中 */
 	useEffect(() => {
-
 		(async function () {
 			//先取得socketId
 			socketIoRef?.current?.on("userIDChannel", (id: string) => {
@@ -174,7 +173,24 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 		socketIoRef?.current?.emit("seatStatus", { screenId: screenId, socketId: socketScreenId.current, seatIndex: seatIndexRef.current });
 	}, [selectSeat])
 
+	// 監控頁面關閉後，移除原本選擇的位子
+	// useEffect(() => {
+	// 	const handleBeforeUnload = (event: any) => {
+	// 		socketIoRef?.current?.emit("leaveScreen", {
+	// 			socketId: state.orderList.socketId,
+	// 			screenId: state.orderList.screenId,
+	// 			leave: true
+	// 		});
+	// 		event.preventDefault()
+	// 	}
+	// 	window.addEventListener('beforeunload', handleBeforeUnload);
+	// 	return () => {
+	// 		window.removeEventListener('beforeunload', handleBeforeUnload);
+	// 	}
+	// }, [])
+
 	// 點擊座位
+
 	const pickSeat = (seat_id: string, selectRef: MutableRefObject<boolean>, DomRef: MutableRefObject<HTMLLIElement | null>, index: number) => {
 		setSelectSeat((prevData) => {
 			// 選擇座位
@@ -195,7 +211,6 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 			return prevData;
 		})
 	}
-	// console.log(' seatIndexRef.current=> ', seatIndexRef.current)
 	const goCheckPage = () => {
 		const slectSeatNums = state.orderList.seat_ordered?.length as number
 		if (state.orderList.quantity - slectSeatNums == 0) {
@@ -229,10 +244,10 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 					{/* <p>選擇座位為<span>{`${selectSeat}`}</span></p> */}
 					<img src="/images/screen2.svg" className='screenImg' alt="" />
 					<div className='salseStatus d-flex justify-content-center mb-3'>
-						<div className='me-4'><span className='d-inline-block me-2 rounded-circle'></span><strong>空位</strong></div>
-						<div className='me-4'><span className='d-inline-block me-2 rounded-circle'></span><strong>已選</strong></div>
-						<div className='me-4'><span className='d-inline-block me-2 rounded-circle'></span><strong>已售</strong></div>
-						<div className='me-4'><span className='d-inline-block me-2 rounded-circle'></span><strong>其他人選位中...</strong></div>
+						<div className='me-2 me-lg-4'><span className='d-inline-block me-2 rounded-circle'></span><strong>空位</strong></div>
+						<div className='me-2 me-lg-4'><span className='d-inline-block me-2 rounded-circle'></span><strong>已選</strong></div>
+						<div className='me-2 me-lg-4'><span className='d-inline-block me-2 rounded-circle'></span><strong>已售</strong></div>
+						<div className='me-2 me-lg-4'><span className='d-inline-block me-2 rounded-circle'></span><strong>其他人選位中...</strong></div>
 					</div>
 					<ul className='theater' ref={seatRef}>
 						{seats.map((seat, index) => {

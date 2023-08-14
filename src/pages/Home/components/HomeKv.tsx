@@ -10,6 +10,9 @@ interface HomeKvProps {
 export const HomeKv: React.FC<HomeKvProps> = ({ children }) => {
   return (
     <div className="homeKv">
+      <div className="bannerTitle text-center">
+        <h1>奢華沉浸，非凡感官</h1>
+      </div>
       <Swiper
         className="homeKv-swiper"
         modules={[Autoplay]}
@@ -24,7 +27,6 @@ export const HomeKv: React.FC<HomeKvProps> = ({ children }) => {
       >
         <SwiperSlide>
           <picture>
-            {/* <source media="(max-width:375px)" srcSet="https://fakeimg.pl/375x480/?text=1" /> */}
             <img src="/images/home/banner.jpg" />
           </picture>
         </SwiperSlide>
