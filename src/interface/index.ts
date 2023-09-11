@@ -64,6 +64,7 @@ export interface CreditCardType {
 	phoneNumber: string,
 	email: string,
 	bankCode: string,
+	payMethod: string
 	creditCardNumber1: string,
 	creditCardNumber2: string,
 	creditCardNumber3: string,

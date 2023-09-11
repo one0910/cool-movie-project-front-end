@@ -45,6 +45,7 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
     const googleId = state.orderList.googleId ? state.orderList.googleId : null;
     const memberStatus = state.orderList.memberId ? "member" : "quick";
     const memberName = state.orderList.memberName ? state.orderList.memberName : "";
+    const userMail = state.orderList.memberMail ? state.orderList.memberMail : "";
 
     /*一進首頁，先清空全域的電影級別顏色*/
     setTheme({ movieLevel: "", theaterSize: "" })
@@ -57,6 +58,7 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
         googleId: googleId,
         status: memberStatus,
         memberName: memberName,
+        memberMail: userMail,
       },
     });
 
@@ -155,7 +157,6 @@ export const HomeOrderForm: React.FC<OrderFormProps> = ({ }) => {
         screenId: screenId,
         movieId: movieId,
         movie_name: movie_name,
-        movie_date: movie_date,
         movie_time: movie_time,
         movie_length: movie_length,
         movie_level: movie_level,

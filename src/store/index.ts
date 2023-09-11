@@ -6,6 +6,7 @@ export interface OrderType {
   googleId?: string
   memberId: string | null
   memberName: string,
+  memberMail: string,
   screenId: string
   movieId: string;
   socketId: string;
@@ -42,6 +43,7 @@ export const OrderInitialState: OrderState = {
   orderList: {
     memberId: null,
     memberName: "",
+    memberMail: "",
     movieId: "",
     screenId: "",
     socketId: "",

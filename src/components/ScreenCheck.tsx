@@ -50,7 +50,7 @@ export const ScreenCheck: React.FC<ScreenCheckProps> = ({ order, titleMsg, child
 
 
   return (
-    <Aside className='px-3 py-3 mt-5 mt-lg-4' >
+    <Aside className='px-3 py-3 mt-4 mt-lg-4' >
       <i className={`align-middle fs-4 color-primary ${(titleMsg) ? "bi bi-ui-checks" : "bi bi-list-check"}`}></i>
       <span className='ms-3 color-primary fw-bold'>{titleMsg ? `${titleMsg}` : "您選定的場次"}</span>
       <div className="screenCheck">

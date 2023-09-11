@@ -59,17 +59,19 @@ export const SignUp: React.FC<SignUpPropsType> = ({ myModal, setIsLogin }) => {
 		const userToken = response.data.data.token
 		const userId = response.data.data.signinRes._id
 		const userName = response.data.data.signinRes.nickName
+		const userMail = response.data.data.signinRes.email
 		const quantity = (state.orderList.quantity) ? state.orderList.quantity : 1
 		const price = (state.orderList.price > 0) ? (state.orderList.price) - 50 : state.orderList.price
 		const googleId = (response.data.data.signinRes.googleId) ? response.data.data.signinRes.googleId : ""
 		localStorage.setItem('userToken', userToken)
-		document.cookie = "remember_me=true; SameSite=None; Secure";
+		document.cookie = "remember_me=true; path=/; SameSite=None; Secure";
 		// 註冊後，將會員名稱、會員ID、會員狀態、價格重新寫入store
 		dispatch({
 			type: "ADD_MEMBER_DATA",
 			payload: {
 				memberId: userId,
 				memberName: userName,
+				memberMail: userMail,
 				price: price,
 				status: "member",
 				googleId: googleId

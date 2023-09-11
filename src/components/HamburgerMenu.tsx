@@ -20,7 +20,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
     setIsOpen(false);
   };
   const [state, dispatch] = useContext(OrderContext);
-  const googleId = (state.orderList.googleId) ? true : false
+  const isGoogleMember = (state.orderList.googleId) ? true : false
   return (
     <>
       <div
@@ -71,17 +71,19 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
                   個人檔案
                 </p>
               </li>
-              <li>
-                <p
-                  className={
-                    location.pathname.match("/member/account") ? "active" : ""
-                  }
-                  onClick={() => navigateHandler("/member/account")}
-                  role="button"
-                >
-                  帳號設定
-                </p>
-              </li>
+              {(!isGoogleMember) &&
+                <li>
+                  <p
+                    className={
+                      location.pathname.match("/member/account") ? "active" : ""
+                    }
+                    onClick={() => navigateHandler("/member/account")}
+                    role="button"
+                  >
+                    修改密碼
+                  </p>
+                </li>
+              }
               <li>
                 <p
                   className={
@@ -90,7 +92,7 @@ export const HamburgerMenu: React.FC<HamburgerMenuProps> = ({
                   onClick={() => navigateHandler("/member/order")}
                   role="button"
                 >
-                  修改密碼
+                  訂票記錄
                 </p>
               </li>
               <li>

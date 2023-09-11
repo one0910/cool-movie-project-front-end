@@ -14,19 +14,23 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
   const token = localStorage.getItem("userToken") ? localStorage.getItem("userToken") : null;
   const navigate = useNavigate();
 
-  // 當網頁refresh時，檢查是否已有登入過
+  // 當網頁重新整理refresh時，檢查是否已有登入過
   useEffect(() => {
     const rememberMe = getCookie("remember_me");
+    console.log('rememberMe => ', rememberMe)
     if (token) {
       const tokenExpTime = JSON.parse(atob(token?.split(".")[1] || "")).exp;
       const userId = JSON.parse(atob(token?.split(".")[1] || "")).id;
       const currentTime = Math.floor(Date.now() / 1000);
       // 如果原本的token沒過期，則繼續向後端拿資料
+      console.log(' tokenExpTime=> ', tokenExpTime)
+      console.log(' currentTime=> ', currentTime)
       if (rememberMe && tokenExpTime > currentTime) {
         (async function () {
           try {
             let response = await authFetch.get("/api/member/getUser");
             const userName = response.data.data.nickName;
+            const userMail = (response.data.data.email) ? response.data.data.email : null
             const googleId = (response.data.data.googleId) ? response.data.data.googleId : null
             dispatch({
               type: "ADD_MEMBER_DATA",
@@ -34,6 +38,7 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
                 memberId: userId,
                 googleId: googleId,
                 memberName: userName,
+                memberMail: userMail,
                 status: "member",
               },
             });

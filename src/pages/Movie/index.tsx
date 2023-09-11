@@ -84,7 +84,7 @@ export const Movie: React.FC<MovieInfoProps> = ({ }) => {
 		}())
 	}, [])
 
-	const onenYoutubeVideo = () => {
+	const openYoutubeVideo = () => {
 		setLoading(true)
 		popUpwindowRef.current?.openModal()
 		const iframe = document.createElement('iframe');
@@ -109,7 +109,7 @@ export const Movie: React.FC<MovieInfoProps> = ({ }) => {
 		<div>
 			<Loading isActive={loading} />
 			<div className='movieBanner mb-3 mb-lg-0'>
-				<div className='palyIcon' onClick={onenYoutubeVideo}>
+				<div className='palyIcon' onClick={openYoutubeVideo}>
 					<img src="/images/utilites/play.svg" alt="" />
 				</div>
 				<PopUpWindows ref={popUpwindowRef} backgroundClose={false} status={"youtube"}>

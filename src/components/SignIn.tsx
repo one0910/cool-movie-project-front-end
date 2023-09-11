@@ -35,6 +35,7 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin }) => {
 	const setDataUI = (response: AxiosResponse<any, any>) => {
 		const userToken = response.data.data.token
 		const userId = response.data.data.signinRes._id
+		const userMail = response.data.data.signinRes.email
 		const userName = response.data.data.signinRes.nickName
 		const quantity = (state.orderList.quantity) ? state.orderList.quantity : 1
 		const price = (state.orderList.price > 0) ? (state.orderList.price) - 50 : state.orderList.price
@@ -43,7 +44,7 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin }) => {
 
 		// 監控若是有勾選"保持登入"
 		if (getValues().remember_me) {
-			document.cookie = "remember_me=true; SameSite=None; Secure";
+			document.cookie = "remember_me=true; path=/; SameSite=None; Secure";
 		} else {
 			document.cookie = "remember_me=; SameSite=None; Secure; expires=Thu, 01 Jan 1970 00:00:00 UTC";
 		}
@@ -54,6 +55,7 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin }) => {
 			payload: {
 				memberId: userId,
 				memberName: userName,
+				memberMail: userMail,
 				price: price,
 				status: "member",
 				googleId: googleId
