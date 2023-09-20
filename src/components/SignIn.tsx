@@ -2,6 +2,7 @@ import React, { useState, useEffect, MutableRefObject, Dispatch, SetStateAction,
 import { OrderContext } from '../store';
 import { useForm, useWatch } from "react-hook-form"
 import { authFetch, getCookie } from '../utilities';
+import axios from 'axios';
 import { Loading, ErrorMsg } from './';
 import { CatchErrorMessage } from '../interface';
 import { AxiosResponse } from 'axios';
@@ -122,7 +123,8 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin }) => {
 				if (newWindow.closed) {
 					(async function () {
 						try {
-							let response = await authFetch.get('/api/google/login/success', { withCredentials: true })
+							let response = await authFetch.get('http://localhost:3000/api/google/login/success', { withCredentials: true })
+							// let response = await authFetch.get('/api/google/login/success', { withCredentials: true })
 							setDataUI(response)
 						} catch (error) {
 							console.log('error', error);
