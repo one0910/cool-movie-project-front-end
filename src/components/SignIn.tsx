@@ -123,8 +123,8 @@ export const SingIn: React.FC<LoginPropsType> = ({ myModal, setIsLogin }) => {
 				if (newWindow.closed) {
 					(async function () {
 						try {
-							let response = await axios.get(`${process.env.REACT_APP_REMOTE_URL}/api/google/login/success`, { withCredentials: true })
-							// let response = await authFetch.get('/api/google/login/success', { withCredentials: true })
+							// let response = await axios.get(`${process.env.REACT_APP_REMOTE_URL}/api/google/login/success`, { withCredentials: true })
+							let response = await authFetch.get('/api/google/login/success', { withCredentials: true })
 							setDataUI(response)
 						} catch (error) {
 							console.log('error', error);
