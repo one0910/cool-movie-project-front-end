@@ -61,7 +61,7 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
       <nav className="navbar container">
         <div className="container-fluid p-0 space-between">
           <a className="logo" onClick={() => window.location.href = '/'}>
-            <img src="/images/Logo.svg" alt="" />
+            <img src="/images/Logo.png" alt="" />
           </a>
           <ul className="menuWrap">
             <NavLink to={`/benifet`}>
