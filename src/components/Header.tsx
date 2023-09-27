@@ -17,7 +17,6 @@ export const Header: React.FC<HeaderProps> = ({ }) => {
   // 當網頁重新整理refresh時，檢查是否已有登入過
   useEffect(() => {
     const rememberMe = getCookie("remember_me");
-    console.log('rememberMe => ', rememberMe)
     if (token) {
       const tokenExpTime = JSON.parse(atob(token?.split(".")[1] || "")).exp;
       const userId = JSON.parse(atob(token?.split(".")[1] || "")).id;
