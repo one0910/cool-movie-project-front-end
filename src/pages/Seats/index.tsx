@@ -3,7 +3,8 @@ import { useParams, useNavigate, useLocation } from 'react-router-dom';
 import { SeatList } from './components/SeatList';
 import { OrderContext } from '../../store';
 import { authFetch } from '../../utilities';
-import { Loading, Login } from '../../components';
+import { Loading, Login, PopUpWindows, MessageBox } from '../../components';
+import { PopUpwindowRefType } from '../../interface';
 import { ScreenCheck } from '../../components/ScreenCheck';
 import styled, { css } from 'styled-components';
 import io, { Socket } from "socket.io-client";
@@ -46,12 +47,14 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 	const screenId = state.orderList.screenId
 	const navigate = useNavigate()
 	const url = process.env.REACT_APP_REMOTE_URL || "http://localhost:3000"
+	const timerRef = useRef<number>(0)
+	const popUpwindowRef = useRef<PopUpwindowRefType | null>(null);
 
 
 
 	/*進入該頁時，先載入座位表*/
 	useEffect(() => {
-		socketIoRef.current = io(url, { transports: ['websocket'] });
+		socketIoRef.current = io(url, { transports: ['websocket'], upgrade: false });
 
 		// 確認是否由checkpay page的上一頁進來，若是的話，先將之前已經劃位的位子清除掉
 		if (state.lastPage == "/checkpay" && state.orderList.socketId) {
@@ -109,8 +112,24 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 				}
 			})
 		}());
+
+
+		const timer = setInterval(() => {
+			timerRef.current += 1;
+			if (timerRef.current >= 120) {
+				clearInterval(timer)
+				socketIoRef?.current?.emit("leaveScreen", {
+					socketId: state.orderList.socketId,
+					screenId: state.orderList.screenId,
+					leave: false
+				});
+				popUpwindowRef.current?.openModal();
+			}
+		}, 1000);
+		return () => { clearInterval(timer); };
 		// 使用seatsReady的狀態管理方式，來確保seat裡的Li DOM已渲染完成
 	}, [seatsReady])
+
 
 	// 監聽當位置點擊時, sokcet server回傳的的座位狀態
 	useEffect(() => {
@@ -132,6 +151,7 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 			// 再針對被選到的位置在畫面上的處理
 			let filteredData = filterSeat(socketScreenId.current, data)
 			filteredData.map((i: number) => {
+				58
 				if (seatRef.current) {
 					const element = seatRef?.current?.childNodes[i] as HTMLElement
 					if (element) {
@@ -140,8 +160,8 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 					}
 				}
 			});
-
 		})
+
 	}, [])
 
 	// 監聽其他使用者的訂票是否完成，若是完成，則改變劃位狀態
@@ -160,7 +180,6 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 	}, [])
 
 
-
 	/*隨時監控點選的座位表位子*/
 	useEffect(() => {
 		dispatch({
@@ -172,22 +191,6 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 		});
 		socketIoRef?.current?.emit("seatStatus", { screenId: screenId, socketId: socketScreenId.current, seatIndex: seatIndexRef.current });
 	}, [selectSeat])
-
-	// 監控頁面關閉後，移除原本選擇的位子
-	// useEffect(() => {
-	// 	const handleBeforeUnload = (event: any) => {
-	// 		socketIoRef?.current?.emit("leaveScreen", {
-	// 			socketId: state.orderList.socketId,
-	// 			screenId: state.orderList.screenId,
-	// 			leave: true
-	// 		});
-	// 		event.preventDefault()
-	// 	}
-	// 	window.addEventListener('beforeunload', handleBeforeUnload);
-	// 	return () => {
-	// 		window.removeEventListener('beforeunload', handleBeforeUnload);
-	// 	}
-	// }, [])
 
 	// 點擊座位
 
@@ -263,6 +266,22 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 					</ScreenCheck>
 				</div>
 			</div>
+			<PopUpWindows ref={popUpwindowRef} backgroundClose={false}>
+				<Loading isActive={loading} />
+				<MessageBox >
+					<div className='text-center'>
+						<i className="bi bi bi-alarm-fill color-primary fw-bold fs-2 me-3"></i>
+						<strong className='color-primary fs-2'>逾時操作</strong>
+					</div>
+					<div className='orderedMovieInfo mt-2 px-lg-4 py-lg-3 px-2 py-2 rounded'>
+						<p>選位逾時超過2分鐘，請重訂票</p>
+					</div>
+					<button className='btn_primary me-1 w-100 mt-1' onClick={() => {
+						popUpwindowRef.current?.closeModal()
+						navigate('/')
+					}}>確定</button>
+				</MessageBox>
+			</PopUpWindows >
 		</div>
 	);
 }

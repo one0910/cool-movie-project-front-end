@@ -9,7 +9,7 @@ export const Footer: React.FC<FooterProps> = () => {
           <div className="row">
             <div className="col-lg-6 col-12">
               <div className="footer-logo">
-                <img src="/images/Logo.svg" />
+                <img src="/images/Logo.png" />
               </div>
               <ul className="d-flex footer-content">
                 <li>聯絡我們</li>
