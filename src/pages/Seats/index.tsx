@@ -114,6 +114,7 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 		}());
 
 
+		// 倒數計時2分鐘，2分鐘後，跳出訊息告知操作逾時重選
 		const timer = setInterval(() => {
 			timerRef.current += 1;
 			if (timerRef.current >= 120) {
@@ -278,7 +279,8 @@ export const Seats: React.FC<SeatsProps> = ({ }) => {
 					</div>
 					<button className='btn_primary me-1 w-100 mt-1' onClick={() => {
 						popUpwindowRef.current?.closeModal()
-						navigate('/')
+						// navigate('/')
+						window.location.href = '/'
 					}}>確定</button>
 				</MessageBox>
 			</PopUpWindows >
